@@ -1,0 +1,25 @@
+{
+  "name": "genie",
+  "version": "0.0.0",
+  "description": "A framework for express",
+  "main": "src/genie.js",
+  "scripts": {
+    "lint": "node_modules/jshint/bin/hint src/ --reporter dev/reporter",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "express"
+  ],
+  "bin": {
+    "genie": "bin/genie.js"
+  },
+  "author": "Tessei Yoshida",
+  "license": "MIT",
+  "dependencies": {
+    "klass": "~1.3.0",
+    "q": "~1.0.0",
+    "express": "~3.4.8",
+    "twig": "~0.6.0"
+  }
+}
