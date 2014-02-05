@@ -1,4 +1,4 @@
-var genie = require('../genie'),
+var genie = require('genie'),
 config = require('./app/config/'+genie.getEnv()),
 app = genie.createApplication(__dirname, config);
 
