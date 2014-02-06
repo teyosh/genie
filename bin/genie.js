@@ -27,7 +27,7 @@ var methods = {
     }
   },
   help : function(argument) {
-    console.log('Genie is frameworl for express.');
+    console.log('Genie is framework for express.');
     this.comment();
   },
   comment: function () {
