@@ -29,7 +29,7 @@ var methods = {
   help : function(argument) {
     console.log('Genie is frameworl for express.');
     this.comment();
-  }
+  },
   comment: function () {
     console.log('init <name> - Generate a new app called <name>');
   }
