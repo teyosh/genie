@@ -116,7 +116,7 @@ var createApplication = function(baseDir, config){
         func = fileLoader.loadModel(name + suffix.MODELS) || modelFunc;
       }
       if(type == 'service'){
-        func = fileLoader.loadService(name + suffix.MODELS) || modelFunc;
+        func = fileLoader.loadService(name + suffix.SERVICES) || modelFunc;
       }
     }
     if(objectOnly){
