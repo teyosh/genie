@@ -1,3 +1,4 @@
+'use strict';
 module.exports = function (app) {
   var ApplicationController = app.getController("Application");
   var HomeController = ApplicationController.extend(function(){
@@ -5,7 +6,8 @@ module.exports = function (app) {
       "index" : "/home/"
     };
     this.params = {
-      "name" : [":word"]
+      "name" : [":word"],
+      "room" : [":roomId"]
     };
     this.addBeforeAction("get", function(res, req, next){
       var CheckService = app.getService("Check");
@@ -18,6 +20,11 @@ module.exports = function (app) {
   }).methods({
     getIndex : function(req, res){
       res.send("Hello, HomeController");
+    },
+    getRoom : function(req, res){
+      var RoomModel = app.getModel('Check');
+      var roomName = RoomModel.getRoom(req.params.roomId);
+      res.send("Room is " + roomName + ".");
     },
     getName : function(req, res){
       res.send("Name is " + req.params.word);

@@ -48,7 +48,6 @@ var isDefined = function(val){
 
 
 var createApplication = function(baseDir, config){
-  config = config || {};
   var app = express(),
   appDir = app.appDir = path.join(baseDir, '/app');
   app.klass = require('klass');
@@ -73,8 +72,8 @@ var createApplication = function(baseDir, config){
   app.factory = function(name, factoryFunc){
     if(isArray(factoryFunc) || isObject(factoryFunc)){
       app.factories[name] = factoryFunc;
-    } else {
-      //factorymethod;
+    } else if(isFunction(factoryFunc)){
+      app.factories[name] = factoryFunc;
     }
     return app.factories[name];
   };
@@ -98,27 +97,54 @@ var createApplication = function(baseDir, config){
     return _config;
   };
 
-
-  app.getController = function(name){
-    return app.controllers[name] || fileLoader.loadController(name + suffix.CONTROLLERS);
-  };
-
-  app.getModel = function(name){
-    return app.models[name];
-  };
-
-  app.getService = function(name){
-    var serviceFunc = function(app){this.app = app;};
-    if(isFunction(app.services[name])){
-      serviceFunc = app.services[name];
+  app.getController = function(name, objectOnly){
+    if(objectOnly){
+      return new (app.controllers[name] || fileLoader.loadController(name + suffix.CONTROLLERS))(name, []);
     } else {
-      serviceFunc = fileLoader.loadService(name + suffix.SERVICES) || serviceFunc;
+      return app.controllers[name] || fileLoader.loadController(name + suffix.CONTROLLERS);
     }
-    return new serviceFunc(app);
+  };
+
+
+  var getServiceModel = function(type, name, objectOnly){
+    var func = function(app){this.app = app;};
+    var object = app[type+"s"];
+    if(isFunction(object[name])){
+      func = object[name];
+    } else {
+      if(type == 'model'){
+        func = fileLoader.loadModel(name + suffix.MODELS) || modelFunc;
+      }
+      if(type == 'service'){
+        func = fileLoader.loadService(name + suffix.MODELS) || modelFunc;
+      }
+    }
+    if(objectOnly){
+      return func;
+    } else {
+      var instance = new func(app);
+      if(!isDefined(instance.serviceName)){
+        instance[type+"Name"] = name;
+      }
+      return instance;
+    }
+
+  }
+
+  app.getModel = function(name, objectOnly){
+    return getServiceModel('model', name, objectOnly);
+  };
+
+  app.getService = function(name, objectOnly){
+    return getServiceModel('service', name, objectOnly);
   };
 
   app.getFactory = function(name){
-    return app.factories[name] || fileLoader.loadFactory(name + suffix.FACTORIES);
+    var factory = app.factories[name] || fileLoader.loadFactory(name + suffix.FACTORIES);
+    if(!isDefined(factory.factoryName)){
+      factory.factoryName = name;
+    }
+    return factory;
   };
 
   app.camelCase2Path = function(val){

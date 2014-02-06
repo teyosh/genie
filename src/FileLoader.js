@@ -91,14 +91,5 @@ module.exports = (function(){
     var loadFn = this.load(file, src, this.suffix.FACTORIES);
     return this.app.factory(loadFn.name, loadFn.func);
   };
-
-
-
-
-
-
-
-
-
   return FileLoader;
 })();

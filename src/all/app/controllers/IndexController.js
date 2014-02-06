@@ -4,6 +4,10 @@ module.exports = function (app, config) {
     this.routes = {
       "index" : "/"
     };
+    this.addBeforeAction("get", function(res, req, next){
+      var CheckFactory = app.getFactory("Check");
+      CheckFactory.start(res, req, next);
+    });
   }).methods({
     getIndex : function(req, res){
       res.render("index", {

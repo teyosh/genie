@@ -1,12 +1,15 @@
+'use strict';
 module.exports = function(app){
-  'use strict';
-  var app = app;
-  var factoryName = "Check";
-  var num = 0;
-  return {
+  var ApplicationFactory = app.getFactory('Application');
+  var CheckFactory = ApplicationFactory.extend({
+    factoryName : "Check",
+    num : 0,
     start : function(req, res, next){
-      console.log("factory: "+ num++);
+      var config = this.getConfig();
+      console.log(config);
+      console.log("factory: "+ this.num++);
       next();
     }
-  }
+  });
+  return CheckFactory;
 };
