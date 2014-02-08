@@ -1,15 +1,16 @@
+'use strict';
 module.exports = (function(){
   var path = require('path'),
   util = require('util');
   function RouteLoader(app){
     this.app = app;
-  };
+  }
   RouteLoader.prototype.load = function(){
     for(var name in this.app.controllers){
-      var controller = this.app.controllers[name];
-      if(controller){
-        var instance = new controller();
-        for(var actionName in controller.prototype){
+      var Controller = this.app.getController(name, true);
+      if(Controller){
+        var instance = new Controller();
+        for(var actionName in Controller.prototype){
           var methodAction = actionName.match(/^(get|post|put|delete)(.*)/);
           if(methodAction){
             var method = methodAction[1];
@@ -31,15 +32,16 @@ module.exports = (function(){
               }
               appPath = path.join(appPath, params);
             }
-            console.log(appPath);
-            if(util.isArray(instance.beforeActions[method])){
-              this.app[method](appPath, instance.beforeActions[method], instance[actionName]);
+            console.log(method+"\t"+appPath);
+            if(util.isArray(instance.beforeActions[method]) || util.isArray(instance.beforeActions.action)){
+              var beforeActions = (instance.beforeActions.action || []).concat((instance.beforeActions[method] || []));
+              this.app[method](appPath, beforeActions, instance[actionName].bind(instance));
             } else {
-              this.app[method](appPath, instance[actionName]);
+              this.app[method](appPath, instance[actionName].bind(instance));
             }
           }
         }
-      };
+      }
     }
   };
   return RouteLoader;

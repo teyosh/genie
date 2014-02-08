@@ -62,6 +62,9 @@ var createApplication = function(baseDir, config){
     Base : require('./BaseService')(app)
   };
   app.factories = {
+    Base : new require('./BaseFactory')(app)()
+  };
+  app.factoryObjects = {
     Base : require('./BaseFactory')(app)
   };
   app.suffix = suffix;
@@ -70,10 +73,12 @@ var createApplication = function(baseDir, config){
   var routeLoader = new RouteLoader(app);
 
   app.factory = function(name, factoryFunc){
-    if(isArray(factoryFunc) || isObject(factoryFunc)){
+    var FactoryFunc = factoryFunc;
+    if(isArray(FactoryFunc) || isObject(FactoryFunc)){
       app.factories[name] = factoryFunc;
-    } else if(isFunction(factoryFunc)){
-      app.factories[name] = factoryFunc;
+    } else if(isFunction(FactoryFunc)){
+      app.factories[name] = new FactoryFunc();
+      app.factoryObjects[name] = FactoryFunc;
     }
     return app.factories[name];
   };
@@ -81,8 +86,6 @@ var createApplication = function(baseDir, config){
   app.service = function(name, serviceFunc){
     if(isFunction(serviceFunc)){
       app.services[name] = serviceFunc;
-    } else {
-      //serviceFunc;
     }
     return app.services[name];
   };
@@ -97,32 +100,27 @@ var createApplication = function(baseDir, config){
     return _config;
   };
 
-  app.getController = function(name, objectOnly){
-    if(objectOnly){
-      return new (app.controllers[name] || fileLoader.loadController(name + suffix.CONTROLLERS))(name, []);
-    } else {
-      return app.controllers[name] || fileLoader.loadController(name + suffix.CONTROLLERS);
-    }
-  };
 
-
-  var getServiceModel = function(type, name, objectOnly){
-    var func = function(app){this.app = app;};
+  var getServiceModelController = function(type, name, objectOnly){
+    var Func = function(app){this.app = app;};
     var object = app[type+"s"];
     if(isFunction(object[name])){
-      func = object[name];
+      Func = object[name];
     } else {
-      if(type == 'model'){
-        func = fileLoader.loadModel(name + suffix.MODELS) || modelFunc;
+      if(type === 'model'){
+        Func = fileLoader.loadModel(name + suffix.MODELS) || Func;
       }
-      if(type == 'service'){
-        func = fileLoader.loadService(name + suffix.SERVICES) || modelFunc;
+      if(type === 'service'){
+        Func = fileLoader.loadService(name + suffix.SERVICES) || Func;
+      }
+      if(type === 'controller'){
+        Func = fileLoader.loadController(name + suffix.CONTROLLERS) || Func;
       }
     }
     if(objectOnly){
-      return func;
+      return Func;
     } else {
-      var instance = new func(app);
+      var instance = new Func(app);
       if(!isDefined(instance.serviceName)){
         instance[type+"Name"] = name;
       }
@@ -131,16 +129,31 @@ var createApplication = function(baseDir, config){
 
   }
 
+  app.getController = function(name, objectOnly){
+    return getServiceModelController('controller', name, objectOnly);
+  };
+
   app.getModel = function(name, objectOnly){
-    return getServiceModel('model', name, objectOnly);
+    return getServiceModelController('model', name, objectOnly);
   };
 
   app.getService = function(name, objectOnly){
-    return getServiceModel('service', name, objectOnly);
+    return getServiceModelController('service', name, objectOnly);
   };
 
-  app.getFactory = function(name){
-    var factory = app.factories[name] || fileLoader.loadFactory(name + suffix.FACTORIES);
+  app.getFactory = function(name, objectOnly){
+    var factory;
+    if(objectOnly){
+      if(!app.factoryObjects[name]){
+        fileLoader.loadFactory(name + suffix.FACTORIES);
+      }
+      factory = app.factoryObjects[name];
+    } else {
+      if(!app.factories[name]){
+        fileLoader.loadFactory(name + suffix.FACTORIES);
+      }
+      factory = app.factories[name];
+    }
     if(!isDefined(factory.factoryName)){
       factory.factoryName = name;
     }
@@ -148,7 +161,7 @@ var createApplication = function(baseDir, config){
   };
 
   app.camelCase2Path = function(val){
-    return val.replace(/[A-Z]/g, function(a, b){return b==0? a.toLowerCase() : "/"+a.toLowerCase();});
+    return val.replace(/[A-Z]/g, function(a, b){return b===0? a.toLowerCase() : "/"+a.toLowerCase();});
   };
 
 
@@ -159,7 +172,7 @@ var createApplication = function(baseDir, config){
     fileLoader.loadFactories(path.join(appDir,paths.FACTORIES), suffix.FACTORIES);
     fileLoader.loadModels(path.join(appDir,paths.MODELS), suffix.MODELS);
     app.use(express.favicon());
-    if(getEnv() == 'development'){
+    if(getEnv() === 'development'){
       app.use(express.logger('dev'));
     }
     app.use(express.json());
@@ -169,7 +182,9 @@ var createApplication = function(baseDir, config){
     app.use(app.router);
     routeLoader.load();
     app.set('views', appDir+'/views');
-    app.set('view engine', 'twig');
+    if(!app.get('view engine')){
+      app.set('view engine', 'twig');
+    }
   };
 
 

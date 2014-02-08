@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function (app) {
-  var ApplicationController = app.getController("Application");
+  var ApplicationController = app.getController("Application", true);
   var HomeController = ApplicationController.extend(function(){
     this.routes = {
       "index" : "/home/"

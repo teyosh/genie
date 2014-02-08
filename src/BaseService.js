@@ -1,6 +1,5 @@
+'use strict';
 module.exports = function(app){
-  'use strict';
-  var app = app;
   var BaseService = app.klass(function(){
     this.app = app;
     this.serviceName = "Base";

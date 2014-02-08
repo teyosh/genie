@@ -1,6 +1,5 @@
 'use strict';
 module.exports = function(app){
-  var app = app;
   var BaseModel = app.klass(function(){
     this.app = app;
     this.modelName = "Base";

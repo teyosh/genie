@@ -8,6 +8,7 @@ module.exports = function(app){
     this.num = this.config.num;
   }).methods({
     start : function(req, res, next){
+      this.supr();
       console.log("service: "+ this.num++);
       next();
     }
