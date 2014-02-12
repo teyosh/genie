@@ -57,7 +57,6 @@ module.exports = (function(){
     if(!this.app.controllers[loadFn.name]){
       this.app.controllers[loadFn.name] = loadFn.func;
     }
-    console.log(loadFn);
     return this.app.controllers[loadFn.name];
   };
 

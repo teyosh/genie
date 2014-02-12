@@ -9,7 +9,7 @@ module.exports = (function(){
     for(var name in this.app.controllers){
       var Controller = this.app.getController(name, true);
       if(Controller){
-        var instance = new Controller();
+        var instance = new Controller(this.app);
         for(var actionName in Controller.prototype){
           var methodAction = actionName.match(/^(get|post|put|delete)(.*)/);
           if(methodAction){
