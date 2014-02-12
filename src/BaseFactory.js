@@ -4,7 +4,7 @@ module.exports = function(app){
     this.app = app
     this.factoryName = 'Base';
   }).methods({
-    getConfig: function(type, name){
+    Config: function(type, name){
       var _type, _name;
       if(type !== undefined && name !== undefined){
         _type = type;
@@ -16,7 +16,7 @@ module.exports = function(app){
         _type = "Factory";
         _name = this.factoryName;
       }
-      return this.app.getConfig(_type, _name);
+      return this.app.Config(_type, _name);
     }
   });
   return BaseFactory;

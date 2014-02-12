@@ -14,7 +14,7 @@ module.exports = (function(){
           var methodAction = actionName.match(/^(get|post|put|delete)(.*)/);
           if(methodAction){
             var method = methodAction[1];
-            var action = methodAction[2]
+            var action = methodAction[2];
             var rootPath = this.app.camelCase2Path(name);
             var actionPath = this.app.camelCase2Path(action);
             var appPath = "";

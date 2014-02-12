@@ -23,7 +23,7 @@ module.exports = function(app){
         this.beforeActions[act].push(func);
       }.bind(this));
     },
-    getConfig: function(type, name){
+    Config: function(type, name){
       var _type, _name;
       if(type !== undefined && name !== undefined){
         _type = type;
@@ -35,7 +35,7 @@ module.exports = function(app){
         _type = "Controller";
         _name = this.factoryName;
       }
-      return this.app.getConfig(_type, _name);
+      return this.app.Config(_type, _name);
     }
   });
   return BaseController;

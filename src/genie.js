@@ -90,7 +90,7 @@ var createApplication = function(baseDir, config){
     return app.services[name];
   };
 
-  app.getConfig = function(type, name){
+  app.Config = function(type, name){
     var _config = {};
     if(config[type] && config[type][name]){
       for(var key in config[type][name]){

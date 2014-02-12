@@ -4,7 +4,7 @@ module.exports = function(app){
     this.app = app;
     this.serviceName = "Base";
   }).methods({
-    getConfig: function(type, name){
+    Config: function(type, name){
       var _type, _name;
       if(type !== undefined && name !== undefined){
         _type = type;
@@ -16,7 +16,7 @@ module.exports = function(app){
         _type = "Service";
         _name = this.serviceName;
       }
-      return this.app.getConfig(_type, _name);
+      return this.app.Config(_type, _name);
     }
   });
   return BaseService;
