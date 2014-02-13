@@ -36,14 +36,15 @@ module.exports = (function(){
     var suffixReg = new RegExp(suffix+".*");
     var name = file.replace(suffixReg, "");
     var filepath = "";
-    if(name.match(/^[A-Z]/g).length > 1){
-      filepath = this.app.camelcase2path(name);
+    if(name.match(/[A-Z]/g).length > 1){
+      filepath = this.app.camelCase2Path(name);
     }
     src = src || path.join(this.app.appDir, filepath);
-    return {
+    var res = {
       name : name,
       func : require(path.join(src, file))(this.app)
     };
+    return res;
   };
 
 
@@ -52,6 +53,16 @@ module.exports = (function(){
   };
 
   FileLoader.prototype.loadController = function(file, src){
+    if(!/\.js$/.test(file)){
+      var filePaths = file.match(/([A-Z][^A-Z]+)/g);
+      var fpath = [];
+      if(filePaths.length > 2){
+        for(var i=0; i<filePaths.length-2; i++){
+          fpath.push(filePaths[i]);
+        }
+        src = path.join(this.app.appDir,this.src.CONTROLLERS, fpath.join("/"));
+      }
+    }
     src = src || path.join(this.app.appDir,this.src.CONTROLLERS);
     var loadFn = this.load(file, src, this.suffix.CONTROLLERS);
     if(!this.app.controllers[loadFn.name]){

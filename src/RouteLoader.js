@@ -34,17 +34,21 @@ module.exports = (function(){
             }
             console.log(method+"\t"+appPath);
             var beforeActions = [];
-            ['action', method].forEach(function(act){
-              console.log(act);
-              if(instance.beforeActions[act] && instance.beforeActions[act]['*']){
-                beforeActions = beforeActions.concat(instance.beforeActions[act]['*']);
-              }
-              if(instance.beforeActions[act] && instance.beforeActions[act][appPath]){
-                beforeActions = beforeActions.concat(instance.beforeActions[act][appPath]);
-              }
-            });
+            if(instance.beforeActions.action && instance.beforeActions.action['*']){
+              beforeActions = beforeActions.concat(instance.beforeActions.action['*']);
+            }
+            if(instance.beforeActions.action && instance.beforeActions.action[appPath]){
+              beforeActions = beforeActions.concat(instance.beforeActions.action[appPath]);
+            }
+            var act = method;
+            if(instance.beforeActions[act] && instance.beforeActions[act]['*']){
+              beforeActions = beforeActions.concat(instance.beforeActions[act]['*']);
+            }
+            if(instance.beforeActions[act] && instance.beforeActions[act][appPath]){
+              beforeActions = beforeActions.concat(instance.beforeActions[act][appPath]);
+            }
             if(beforeActions.length){
-                this.app[method](appPath, beforeActions, instance[actionName].bind(instance));
+              this.app[method](appPath, beforeActions, instance[actionName].bind(instance));
             } else {
               this.app[method](appPath, instance[actionName].bind(instance));
             }
