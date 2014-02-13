@@ -171,15 +171,6 @@ var createApplication = function(baseDir, config){
     fileLoader.loadServices(path.join(appDir,paths.SERVICES), suffix.SERVICES);
     fileLoader.loadFactories(path.join(appDir,paths.FACTORIES), suffix.FACTORIES);
     fileLoader.loadModels(path.join(appDir,paths.MODELS), suffix.MODELS);
-    app.use(express.favicon());
-    if(getEnv() === 'development'){
-      app.use(express.logger('dev'));
-    }
-    app.use(express.json());
-    app.use(express.urlencoded());
-    app.use(express.methodOverride());
-    app.use(express.cookieParser());
-    app.use(app.router);
     routeLoader.load();
     app.set('views', appDir+'/views');
     if(!app.get('view engine')){

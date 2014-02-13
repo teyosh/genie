@@ -5,22 +5,38 @@ module.exports = function(app){
     this.app = app;
     this.beforeActions = {};
   }).methods({
-    addBeforeAction: function(act, func){
-      if(!func){
-        func = act;
-        act = "action";
+    addBeforeAction: function(act, path, func){
+      if(typeof func === 'undefined'){
+        if(typeof path === 'function'){
+          func = path;
+          path = "*";
+        }
+        if(typeof act === 'function'){
+          func = act;
+          act = 'action';
+        }
       }
-      var _act = [];
+      var _act = [],
+      _path = [];
       if(util.isArray(act)){
         _act = act;
       } else {
         _act = [act];
       }
-      (util.isArray(act)? act : [act]).forEach(function(act){
+      if(util.isArray(path)){
+        _path = path;
+      } else {
+        _path = [path];
+      }
+      (util.isArray(act)? act : [act]).forEach(function(act, num){
         if(this.beforeActions[act] === undefined){
-          this.beforeActions[act] = [];
+          this.beforeActions[act] = {};
         }
-        this.beforeActions[act].push(func);
+        var path = _path[num]? _path[num] : '*';
+        if(this.beforeActions[act][path] === undefined){
+          this.beforeActions[act][path] = [];
+        }
+        this.beforeActions[act][path].push(func);
       }.bind(this));
     },
     Config: function(type, name){

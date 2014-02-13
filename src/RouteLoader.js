@@ -33,9 +33,18 @@ module.exports = (function(){
               appPath = path.join(appPath, params);
             }
             console.log(method+"\t"+appPath);
-            if(util.isArray(instance.beforeActions[method]) || util.isArray(instance.beforeActions.action)){
-              var beforeActions = (instance.beforeActions.action || []).concat((instance.beforeActions[method] || []));
-              this.app[method](appPath, beforeActions, instance[actionName].bind(instance));
+            var beforeActions = [];
+            ['action', method].forEach(function(act){
+              console.log(act);
+              if(instance.beforeActions[act] && instance.beforeActions[act]['*']){
+                beforeActions = beforeActions.concat(instance.beforeActions[act]['*']);
+              }
+              if(instance.beforeActions[act] && instance.beforeActions[act][appPath]){
+                beforeActions = beforeActions.concat(instance.beforeActions[act][appPath]);
+              }
+            });
+            if(beforeActions.length){
+                this.app[method](appPath, beforeActions, instance[actionName].bind(instance));
             } else {
               this.app[method](appPath, instance[actionName].bind(instance));
             }
