@@ -165,7 +165,7 @@ var createApplication = function(baseDir, config){
   };
 
 
-
+  var server;
   app.init = function(){
     fileLoader.loadControllers(path.join(appDir,paths.CONTROLLERS), suffix.CONTROLLERS);
     fileLoader.loadServices(path.join(appDir,paths.SERVICES), suffix.SERVICES);
@@ -176,12 +176,15 @@ var createApplication = function(baseDir, config){
     if(!app.get('view engine')){
       app.set('view engine', 'twig');
     }
+    server = http.createServer(app);
+    return server;
   };
 
 
   app.listen = function(port){
-    http.createServer(app).listen((port || getPort()), function(){
-      console.log('listening on port ' + getPort());
+    port = port || getPort();
+    (server || http.createServer(app)).listen(port, function(){
+      console.log('listening on port ' + port);
     });
   };
   return app;

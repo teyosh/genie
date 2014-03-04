@@ -18,6 +18,7 @@ module.exports = (function(){
             var rootPath = this.app.camelCase2Path(name);
             var actionPath = this.app.camelCase2Path(action);
             var appPath = "";
+            var appParamPath = "";
             if(instance.routes && (instance.routes[actionPath] !== undefined)){
               appPath = instance.routes[actionPath];
             } else {
@@ -27,12 +28,29 @@ module.exports = (function(){
               var params = "";
               if(util.isArray(instance.params[actionPath])){
                 params = instance.params[actionPath].join("/");
-              } else {
+              } else if(typeof instance.params[actionPath] === "string"){
                 params = instance.params[actionPath];
+              } else {
+                if(instance.params[actionPath].action){
+                  if(util.isArray(instance.params[actionPath].action)){
+                    params = instance.params[actionPath].action.join("/");
+                  } else if(typeof instance.params[actionPath].action === "string"){
+                    params = instance.params[actionPath].action;
+                  }
+                }
+                if(instance.params[actionPath][method]){
+                  if(util.isArray(instance.params[actionPath][method])){
+                    params = instance.params[actionPath][method].join("/");
+                  } else if(typeof instance.params[actionPath][method] === "string"){
+                    params = instance.params[actionPath][method];
+                  }
+                }
               }
-              appPath = path.join(appPath, params);
+              appParamPath = path.join(appPath, params);
+            } else {
+              appParamPath = appPath;
             }
-            console.log(method+"\t"+appPath);
+            console.log(method+"\t"+appParamPath);
             var beforeActions = [];
             if(instance.beforeActions.action && instance.beforeActions.action['*']){
               beforeActions = beforeActions.concat(instance.beforeActions.action['*']);
@@ -48,9 +66,9 @@ module.exports = (function(){
               beforeActions = beforeActions.concat(instance.beforeActions[act][appPath]);
             }
             if(beforeActions.length){
-              this.app[method](appPath, beforeActions, instance[actionName].bind(instance));
+              this.app[method](appParamPath, beforeActions, instance[actionName].bind(instance));
             } else {
-              this.app[method](appPath, instance[actionName].bind(instance));
+              this.app[method](appParamPath, instance[actionName].bind(instance));
             }
           }
         }
