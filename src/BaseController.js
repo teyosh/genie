@@ -49,7 +49,7 @@ module.exports = function(app){
         _name = type;
       } else {
         _type = "Controller";
-        _name = this.factoryName;
+        _name = this.controllerName;
       }
       return this.app.Config(_type, _name);
     }
