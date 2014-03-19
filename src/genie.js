@@ -201,4 +201,5 @@ module.exports.isFunction = isFunction;
 module.exports.isString = isString;
 module.exports.isObject = isObject;
 module.exports.isDefined = isDefined;
-
+module.exports.FileLoader = FileLoader;
+module.exports.RouteLoader = RouteLoader;
