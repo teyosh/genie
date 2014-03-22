@@ -4,7 +4,7 @@ module.exports = function(app){
   var CheckService = ApplicationService.extend(function(app){
     this.app = app;
     this.serviceName = "Check";
-    this.config = this.getConfig();
+    this.config = this.Config();
     this.num = this.config.num;
   }).methods({
     start : function(req, res, next){
