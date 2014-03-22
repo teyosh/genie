@@ -1,5 +1,5 @@
 {
-  "name": "genie",
+  "name": "genie-express",
   "version": "0.2.0",
   "description": "A framework for express",
   "main": "src/genie.js",
