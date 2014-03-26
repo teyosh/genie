@@ -29,7 +29,7 @@ function generateContent(name, type){
   src = "";
   var fpath = [];
   for(var i=0; i<filePaths.length; i++){
-    fpath.push(filePaths[i].toLowerCase());
+    fpath.push(filePaths[i].replace(/^[a-z]/, function(a, b){ return b==0? a.toUpperCase() : a}));
   }
   src = path.join('./app/'+pulral( type )+'/' + fpath.join("/") + "/");
   exec('mkdir -p '+ src, function(err){
