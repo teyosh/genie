@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Genie by teyosh</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Genie</h1>
+        <h2></h2>
+
+        <section id="downloads">
+          <a href="https://github.com/teyosh/genie/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/teyosh/genie/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/teyosh/genie" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>
+<a name="genie" class="anchor" href="#genie"><span class="octicon octicon-link"></span></a>genie</h1>
+
+<p><a href="https://travis-ci.org/teyosh/genie"><img src="https://travis-ci.org/teyosh/genie.png?branch=master" alt="Build Status"></a></p>
+
+<p>Genie is framework for <a href="http://expressjs.com/">Express3.x</a> based to <a href="https://github.com/ded/klass">Klass</a>.</p>
+
+<h1>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
+
+<h3>
+<a name="get-the-cli" class="anchor" href="#get-the-cli"><span class="octicon octicon-link"></span></a>Get the CLI</h3>
+
+<p>$ npm install genie-express -g</p>
+
+<h1>
+<a name="quick-start" class="anchor" href="#quick-start"><span class="octicon octicon-link"></span></a>Quick Start</h1>
+
+<h3>
+<a name="create-an-app" class="anchor" href="#create-an-app"><span class="octicon octicon-link"></span></a>Create an app</h3>
+
+<p>$ genie create my-app<br>
+  $ cd my-app $$ npm install genie-express  </p>
+
+<h3>
+<a name="start-your-app" class="anchor" href="#start-your-app"><span class="octicon octicon-link"></span></a>Start your app</h3>
+
+<p>$ node server.js</p>
+
+<h1>
+<a name="scaffold" class="anchor" href="#scaffold"><span class="octicon octicon-link"></span></a>Scaffold</h1>
+
+<p>$ genie controller [name]<br>
+  $ genie model [name]<br>
+  $ genie service [name]<br>
+  $ genie factory [name]  </p>
+
+<h1>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h1>
+
+<h3>
+<a name="controller" class="anchor" href="#controller"><span class="octicon octicon-link"></span></a>Controller</h3>
+
+<div class="highlight highlight-js"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="nx">config</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">ApplicationController</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">getController</span><span class="p">(</span><span class="s2">"Application"</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">IndexController</span> <span class="o">=</span> <span class="nx">ApplicationController</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">routes</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="s2">"index"</span> <span class="o">:</span> <span class="s2">"/"</span>
+    <span class="p">};</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addBeforeAction</span><span class="p">(</span><span class="s2">"action"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">next</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">CheckFactory</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">getFactory</span><span class="p">(</span><span class="s2">"Check"</span><span class="p">);</span>
+      <span class="nx">CheckFactory</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">next</span><span class="p">);</span>
+    <span class="p">});</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addBeforeAction</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">next</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">CheckFactory</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">getFactory</span><span class="p">(</span><span class="s2">"Check"</span><span class="p">);</span>
+      <span class="nx">CheckFactory</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">next</span><span class="p">);</span>
+    <span class="p">});</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addBeforeAction</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">next</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">CheckService</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">getService</span><span class="p">(</span><span class="s2">"Check"</span><span class="p">);</span>
+      <span class="nx">CheckService</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">next</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}).</span><span class="nx">methods</span><span class="p">({</span>
+    <span class="nx">getIndex</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">"index"</span><span class="p">,</span> <span class="p">{</span>
+        <span class="nx">title</span> <span class="o">:</span> <span class="s2">"Hello, Genie"</span>
+      <span class="p">});</span>
+    <span class="p">},</span>
+  <span class="p">});</span>
+  <span class="k">return</span> <span class="nx">IndexController</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="model" class="anchor" href="#model"><span class="octicon octicon-link"></span></a>Model</h3>
+
+<div class="highlight highlight-js"><pre><span class="s1">'use strict'</span><span class="p">;</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">ApplicationModel</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">getModel</span><span class="p">(</span><span class="s1">'Application'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">CheckModel</span> <span class="o">=</span> <span class="nx">ApplicationModel</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">app</span> <span class="o">=</span> <span class="nx">app</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">modelName</span> <span class="o">=</span> <span class="s2">"Check"</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">rooms</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Apple'</span><span class="p">,</span> <span class="s1">'Orange'</span><span class="p">,</span> <span class="s1">'Grape'</span><span class="p">];</span>
+  <span class="p">}).</span><span class="nx">methods</span><span class="p">({</span>
+    <span class="nx">getRoom</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">){</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">rooms</span><span class="p">);</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">rooms</span><span class="p">[</span><span class="nx">id</span><span class="p">];</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+  <span class="k">return</span> <span class="nx">CheckModel</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+
+<h3>
+<a name="service" class="anchor" href="#service"><span class="octicon octicon-link"></span></a>Service</h3>
+
+<div class="highlight highlight-js"><pre><span class="s1">'use strict'</span><span class="p">;</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">ApplicationService</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">getService</span><span class="p">(</span><span class="s1">'Application'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">CheckService</span> <span class="o">=</span> <span class="nx">ApplicationService</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">app</span> <span class="o">=</span> <span class="nx">app</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">serviceName</span> <span class="o">=</span> <span class="s2">"Check"</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">config</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">Config</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">num</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">num</span><span class="p">;</span>
+  <span class="p">}).</span><span class="nx">methods</span><span class="p">({</span>
+    <span class="nx">start</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">){</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">supr</span><span class="p">();</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"service: "</span><span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">num</span><span class="o">++</span><span class="p">);</span>
+      <span class="nx">next</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+  <span class="k">return</span> <span class="nx">CheckService</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+
+<h3>
+<a name="factory" class="anchor" href="#factory"><span class="octicon octicon-link"></span></a>Factory</h3>
+
+<div class="highlight highlight-js"><pre><span class="s1">'use strict'</span><span class="p">;</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">ApplicationFactory</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">getFactory</span><span class="p">(</span><span class="s1">'Application'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">CheckFactory</span> <span class="o">=</span> <span class="nx">ApplicationFactory</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">factoryName</span> <span class="o">=</span> <span class="s2">"Check"</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}).</span><span class="nx">methods</span><span class="p">({</span>
+    <span class="nx">start</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">){</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">supr</span><span class="p">();</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"factory: "</span><span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">num</span><span class="o">++</span><span class="p">);</span>
+      <span class="nx">next</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+  <span class="k">return</span> <span class="nx">CheckFactory</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+
+<h3>
+<a name="view" class="anchor" href="#view"><span class="octicon octicon-link"></span></a>View</h3>
+
+<p>Uses <a href="https://github.com/justjohn/twig.js">Twig</a> to render Template</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"title"</span><span class="nt">&gt;</span>{% block content %}{% endblock %}<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+<div class="highlight highlight-html"><pre>{% extends "layout.twig" %}
+{% block content %}
+{{ title }}
+{% endblock %}
+</pre></div>
+
+<h3>
+<a name="routing" class="anchor" href="#routing"><span class="octicon octicon-link"></span></a>Routing</h3>
+
+<p>Routings are extract from method of controller.<br>
+Extract methods are GET, POST, PUT and DELETE.  </p>
+
+<h4>
+<a name="get-index" class="anchor" href="#get-index"><span class="octicon octicon-link"></span></a>get /index</h4>
+
+<div class="highlight highlight-js"><pre><span class="nx">getIndex</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">"index"</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">title</span> <span class="o">:</span> <span class="s2">"Get index"</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4>
+<a name="post-create" class="anchor" href="#post-create"><span class="octicon octicon-link"></span></a>post /create</h4>
+
+<div class="highlight highlight-js"><pre><span class="nx">postCreate</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">"index"</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">title</span> <span class="o">:</span> <span class="s2">"Post create"</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Params are extract from property of controller.</p>
+
+<h4>
+<a name="get-testmemberid" class="anchor" href="#get-testmemberid"><span class="octicon octicon-link"></span></a>get /test/member/:id</h4>
+
+<div class="highlight highlight-js"><pre><span class="c1">// controllers/test/TestController.js</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="nx">config</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">ApplicationController</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">getController</span><span class="p">(</span><span class="s2">"Application"</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">TestController</span> <span class="o">=</span> <span class="nx">ApplicationController</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">params</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="s2">"member"</span> <span class="o">:</span> <span class="p">[</span><span class="s2">":id"</span><span class="p">]</span>
+    <span class="p">};</span>
+  <span class="p">}).</span><span class="nx">methods</span><span class="p">({</span>
+    <span class="nx">getMember</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">"index"</span><span class="p">,</span> <span class="p">{</span>
+        <span class="nx">title</span> <span class="o">:</span> <span class="s2">"Genie is "</span><span class="o">+</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span>
+      <span class="p">});</span>
+    <span class="p">},</span>
+  <span class="p">});</span>
+  <span class="k">return</span> <span class="nx">TestController</span><span class="p">;</span>
+<span class="p">}</span>
+
+</pre></div>
+
+<p>In the case of a different method?</p>
+
+<div class="highlight highlight-js"><pre><span class="k">this</span><span class="p">.</span><span class="nx">params</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">"member"</span> <span class="o">:</span> <span class="p">{</span>
+    <span class="nx">get</span> <span class="o">:</span> <span class="p">[</span><span class="s2">":id"</span><span class="p">],</span>
+    <span class="nx">post</span><span class="o">:</span> <span class="p">[</span><span class="s2">":test"</span><span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+</pre></div>
+
+<p>Routes change extract from property of controller.</p>
+
+<h3>
+<a name="get-test" class="anchor" href="#get-test"><span class="octicon octicon-link"></span></a>get /test/</h3>
+
+<div class="highlight highlight-js"><pre><span class="c1">// controllers/test/TestController.js</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="nx">config</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">ApplicationController</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">getController</span><span class="p">(</span><span class="s2">"Application"</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">TestController</span> <span class="o">=</span> <span class="nx">ApplicationController</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">routes</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="s2">"index"</span><span class="o">:</span> <span class="s2">"/test/"</span>
+    <span class="p">};</span>
+  <span class="p">}).</span><span class="nx">methods</span><span class="p">({</span>
+    <span class="nx">getIndex</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">"index"</span><span class="p">,</span> <span class="p">{</span>
+        <span class="nx">title</span> <span class="o">:</span> <span class="s2">"Genie is test"</span>
+      <span class="p">});</span>
+    <span class="p">},</span>
+  <span class="p">});</span>
+  <span class="k">return</span> <span class="nx">TestController</span><span class="p">;</span>
+<span class="p">}</span>
+
+</pre></div>
+
+<h3>
+<a name="service-and-factory" class="anchor" href="#service-and-factory"><span class="octicon octicon-link"></span></a>Service and Factory</h3>
+
+<p>Service will create an instance for each call.</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="nx">config</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">ApplicationController</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">getController</span><span class="p">(</span><span class="s2">"Application"</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">TestController</span> <span class="o">=</span> <span class="nx">ApplicationController</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">TestService</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">getService</span><span class="p">(</span><span class="s2">"Test"</span><span class="p">);</span>
+  <span class="p">})</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Factory will call the same instance.</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="nx">config</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">ApplicationController</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">getController</span><span class="p">(</span><span class="s2">"Application"</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">TestController</span> <span class="o">=</span> <span class="nx">ApplicationController</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">TestFactory</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">getFactory</span><span class="p">(</span><span class="s2">"Test"</span><span class="p">);</span>
+  <span class="p">})</span>
+<span class="p">}</span>
+</pre></div>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
