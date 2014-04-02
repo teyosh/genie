@@ -1,6 +1,6 @@
 {
   "name": "genie-express",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A framework for express",
   "main": "src/genie.js",
   "scripts": {
