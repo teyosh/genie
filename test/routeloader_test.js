@@ -39,7 +39,6 @@ describe('RouteLoader', function() {
       app.routes.delete.forEach(function(route){
         deletePaths[route.path] = true;
       });
-      console.log(app.routes);
       expect(getPaths).to.have.keys(check.getPaths);
       expect(putPaths).to.have.keys(check.putPaths);
       expect(postPaths).to.have.keys(check.postPaths);
