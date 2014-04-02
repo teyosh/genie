@@ -3,7 +3,7 @@ genie
 
 [![Build Status](https://travis-ci.org/teyosh/genie.png?branch=master)](https://travis-ci.org/teyosh/genie)
 
-Genie is framework for [Express](http://expressjs.com/) based to [Klass](https://github.com/ded/klass).
+Genie is framework for [Express3.x](http://expressjs.com/) based to [Klass](https://github.com/ded/klass).
 
 Installation
 =====
@@ -13,18 +13,18 @@ Installation
 Quick Start
 =====
 ### Create an app
-  $ genie create my-app
-  $ cd my-app $$ npm install genie-express
+  $ genie create my-app  
+  $ cd my-app $$ npm install genie-express  
 
 ### Start your app
   $ node server.js
 
 # Scaffold
 
-  $ genie controller [name]
-  $ genie model [name]
-  $ genie service [name]
-  $ genie factory [name]
+  $ genie controller [name]  
+  $ genie model [name]  
+  $ genie service [name]  
+  $ genie factory [name]  
 
 Examples
 =====
@@ -139,8 +139,8 @@ Uses [Twig](https://github.com/justjohn/twig.js) to render Template
 
 ### Routing
 
-Routings are extract from method of controller.
-Extract methods are GET, POST, PUT and DELETE.
+Routings are extract from method of controller.  
+Extract methods are GET, POST, PUT and DELETE.  
 
 #### get /index
 
