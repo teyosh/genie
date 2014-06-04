@@ -51,6 +51,13 @@ module.exports = (function(){
           fpath.push(filePaths[i]);
         }
         src = path.join(this.app.appDir, fileType, fpath.join("/"));
+        if(!fs.existsSync(path.join(src, file+".js"))){
+          fpath = [];
+          for(var i=0; i<filePaths.length-1; i++){
+            fpath.push(filePaths[i]);
+          }
+          src = path.join(this.app.appDir, fileType, fpath.join("/"));
+        }
       } else {
         src = src || path.join(this.app.appDir, fileType);
         if(!fs.existsSync(this.filePath(file+".js", src, suffix))){
