@@ -22,7 +22,7 @@ module.exports = (function(){
             if(instance.routes && (instance.routes[actionPath] !== undefined)){
               appPath = instance.routes[actionPath];
             } else {
-              appPath = "/"+path.join(rootPath, actionPath);
+              appPath = "/"+rootPath+((actionPath)? "/"+actionPath: "");
             }
             if(instance.params && instance.params[actionPath]){
               var params = "";
@@ -46,7 +46,7 @@ module.exports = (function(){
                   }
                 }
               }
-              appParamPath = path.join(appPath, params);
+              appParamPath = appPath+((params)? "/"+params : "");
             } else {
               appParamPath = appPath;
             }
